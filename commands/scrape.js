@@ -7,6 +7,9 @@ import { randomDelayBetweenInSeconds } from '../helpers/helper.js';
 
 
 export function scrape(country, options){
+    login(); // this whatsapp login is needed to client.initialize(); 
+
+
     if(options.url){
         //URL
         console.log("url: "+options.url);
@@ -18,7 +21,6 @@ export function scrape(country, options){
         //     console.log('Data : ', data);
         // })
     }else if(options.map){
-        login();
         //from google map.
         console.log("Map: "+options.map);
         const keyword = "Hospitals"; //Hospitals or whatever in some country location like state or district.

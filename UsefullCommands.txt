@@ -1,2 +1,5 @@
+Command: node index.js login 'Anytext'
+Description: After login write any text  basically whatsapp or other social media.
+
 Command: node index.js scrape BD --map google.com
 Description: This command will WhatsApp number and validate as Bangladeshi number. 

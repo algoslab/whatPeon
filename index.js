@@ -2,7 +2,6 @@
 import { program } from 'commander';
 import {scrape} from './commands/scrape.js';
 import { login } from './login/whatsapp/whatsappLogin.js';
-import { db } from './helpers/dbConnection.js';
 
 program
   .name('mycli')
