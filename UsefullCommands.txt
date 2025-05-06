@@ -1,5 +1,11 @@
 Command: node index.js login 'Anytext'
 Description: After login write any text  basically whatsapp or other social media.
 
-Command: node index.js scrape BD --map google.com
+Command: index.js import --keywords keywords.txt
+Description: A .txt file to insert keywords. keywords will be used to scrape phone number. keywrods must be line by line.
+
+Command: index.js import --categories keywords.txt
+Description: A .txt file to insert categories. categories will be used to group marketing_contacts table's number. categories must be line by line.
+
+Command: node index.js scrape BD 1 --map google.com
 Description: This command will WhatsApp number and validate as Bangladeshi number. 

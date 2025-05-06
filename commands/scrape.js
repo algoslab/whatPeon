@@ -6,7 +6,7 @@ import { randomDelayBetweenInSeconds } from '../helpers/helper.js';
 
 
 
-export function scrape(country, options){
+export function scrape(country, category, options){
     login(); // this whatsapp login is needed to client.initialize(); 
 
 
@@ -45,7 +45,7 @@ export function scrape(country, options){
                     }
                     
                     try{
-                        await db.query(`INSERT INTO marketing_contacts (name, number, whatsapp, sent) VALUES ($1, $2, $3, $4)`, [name, phoneNumber, isWhatsapp, null]);
+                        await db.query(`INSERT INTO marketing_contacts (name, number, whatsapp, category, sent) VALUES ($1, $2, $3, $4, $5)`, [name, phoneNumber, isWhatsapp, category, null]);
                         console.log("Inserted", phoneNumber);
                     }catch (err) {
                         console.error('Error inserting:', err.message);
