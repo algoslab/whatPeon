@@ -6,7 +6,7 @@ import { randomDelayBetweenInSeconds } from '../helpers/helper.js';
 
 
 
-export function scrape(country, category, options){
+export async function scrape(country, category, options){
     login(); // this whatsapp login is needed to client.initialize(); 
 
 
@@ -23,7 +23,27 @@ export function scrape(country, category, options){
     }else if(options.map){
         //from google map.
         console.log("Map: "+options.map);
-        const keyword = "Hospitals"; //Hospitals or whatever in some country location like state or district.
+        await scrapeGoogleMap(country, category)
+        setInterval(async () => {
+            await scrapeGoogleMap(country, category)
+        }, 1800000); //3600000 milisconds = 1 hour.
+        
+
+    }
+}
+
+
+async function scrapeGoogleMap(country, category)
+{
+    console.log("Inside scrapeGoogleMap");
+    let results = await db.query(`SELECT id, keyword from keywords where scraped is null limit 1`);
+    if(results.rows.length > 0){
+        let serachTerm = results.rows[0]['keyword'];
+        let keywordId = results.rows[0]['id'];
+        const scraped = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        await db.query(`UPDATE keywords SET scraped = $1 WHERE id = $2`, [scraped, keywordId]);
+
+        const keyword = serachTerm; //Keyword to search for.
         console.log("Passing keyword to scraper: "+keyword);
         const process = spawn('python', ['-u','bots/googleMapBot.py', keyword, country]);
         let numbersArray = [];
@@ -50,7 +70,7 @@ export function scrape(country, category, options){
                     }catch (err) {
                         console.error('Error inserting:', err.message);
                     }
-                    //const sentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+                    
                     await randomDelayBetweenInSeconds(2, 5); //2-5 seconds delay
                 }
             });        
@@ -63,8 +83,8 @@ export function scrape(country, category, options){
         process.on('close', (code) => {
             console.log(`Scraper script exited with code ${code}: Waiting for whatsapp client to initialize...`);
         });
-
-          
+    }else{
+        console.log('No keywords left to search!');
     }
 }
 
